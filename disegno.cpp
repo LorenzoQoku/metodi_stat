@@ -12,9 +12,9 @@
 void disegno(){
 
 
-    Int_t nbins=200;
-    Double_t min=-1000;
-    Double_t max=1000;
+    Int_t nbins=100000;
+    Double_t min=0;
+    Double_t max=1;
 
     string a="data_Lorenzo_Qoku.txt";
 
