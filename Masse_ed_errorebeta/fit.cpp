@@ -2,10 +2,11 @@
 #include "TCanvas.h"
 #include "TFile.h"
 
+//La funzione esegue il fit dell'istogramma dei valori di beta calcolati
 
 void fit(){
 
-    Int_t nbins=50000;
+    Int_t nbins=10000;
     Double_t min=0;
     Double_t max=1.1;
 

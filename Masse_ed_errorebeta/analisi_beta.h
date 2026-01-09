@@ -7,13 +7,12 @@
 #include <sstream>
 #include "TTree.h"
 #include <cmath>
-#include "doppia_hit.h"
 #include "sum_no_doppieh.h"
 
 
 using namespace std;
 
-//La funzione prende in ingresso il nome del file dei dati e riempe un istogramma
+//La funzione prende in ingresso il nome del file dei dati e riempe un istogramma con i valori di beta calcolati
 
 void isto_beta(string a, TH1F *h) {
 
