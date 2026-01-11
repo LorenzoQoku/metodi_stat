@@ -1,5 +1,5 @@
-#ifndef BETA_H  
-#define BETA_H
+#ifndef BETAD_H  
+#define BETAD_H
 
 #include <iostream>
 #include <fstream>
@@ -8,13 +8,14 @@
 #include "TTree.h"
 #include <cmath>
 #include "sum_no_doppieh.h"
+#include "TH3F.h"
 
 
 using namespace std;
 
 //La funzione prende in ingresso il nome del file dei dati e riempe un istogramma con i valori di beta calcolati
 
-void isto_beta(string a, TH1F *h) {
+void isto_beta_t(string a, TH3F *h3) {
 
     Double_t beta[10]={0,0,0,0,0,0,0,0,0,0};
     Double_t x[10]={33,33,33,33,33,33,33,33,33,33};
@@ -27,6 +28,11 @@ void isto_beta(string a, TH1F *h) {
     //variabile che tiene conto del evento che stiamo leggendo
     int c=0;
 
+    int b=0;
+    int l=0;
+    Double_t sum[3]={0,0,0};
+    Double_t vett[48551];
+
     while(file >> value ) {
         Double_t v=value;
         if(i==3){
@@ -34,6 +40,9 @@ void isto_beta(string a, TH1F *h) {
         }
         if(c==10){
             c=0;
+        }
+        if(b==3){
+            b=0;
         }
 
         if(i==0){
@@ -119,14 +128,30 @@ void isto_beta(string a, TH1F *h) {
                 beta[9]=v;
                 c++;
                 Double_t mean_beta=sum_noh(beta,k);
-                h->Fill(mean_beta);
+                sum[b]=mean_beta;
+                b++;
+                if(b==3){
+                   // h3->Fill(sum[0],sum[1],sum[2]);
+                }
+                vett[l]=mean_beta;
             }
             
         } 
         i++;
+        l++;
 
     }
     file.close();
+
+    for (int j=0; j<48551; j++){
+        for (int k=0; k<48551; k++){
+            for (int p=0; p<48551; p++){
+                if(j!=k && j!=p && k!==p)
+                h->Fill(vett[j],vett[k],vett[p]);
+            }
+        
+        }
+    }
 }
 
 
