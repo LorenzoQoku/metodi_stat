@@ -1,20 +1,17 @@
-#ifndef BETA_H  
-#define BETA_H
+#ifndef MASS_H  
+#define MASS_H
 
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include "TTree.h"
-#include <cmath>
-#include "sum_no_doppieh.h"
-
+#include "histo.h"
 
 using namespace std;
 
+void do_LDA(string a, TF1 *ftot, TH1F *h_LDA){
+
+        using namespace std;
+
 //La funzione prende in ingresso il nome del file dei dati e riempe un istogramma con i valori di beta calcolati
 
-void isto_beta_o(string a, TH1F *h) {
 
     Double_t beta[10]={0,0,0,0,0,0,0,0,0,0};
     Double_t x[10]={33,33,33,33,33,33,33,33,33,33};
@@ -27,6 +24,12 @@ void isto_beta_o(string a, TH1F *h) {
     //variabile che tiene conto del evento che stiamo leggendo
     int c=0;
     int l=0;
+
+    Double_t mu_0=ftot->GetParameter(1);
+    Double_t mu_1=ftot->GetParameter(4);
+    Double_t var_0=ftot->GetParameter(2);
+    Double_t var_1=ftot->GetParameter(5);
+    Double_t alpha=1/(var_0+var_1)*(mu_0-mu_1);
 
     while(file >> value ) {
         Double_t v=value;
@@ -121,7 +124,8 @@ void isto_beta_o(string a, TH1F *h) {
                 beta[9]=v;
                 c++;
                 Double_t mean_beta=sum_noh(beta,k);
-                h->Fill(mean_beta);
+                Double_t mass = sqrt(1-mean_beta*mean_beta)*1500;
+                h_LDA->Fill(mass);
             
             }
             
@@ -133,6 +137,8 @@ void isto_beta_o(string a, TH1F *h) {
 
     
 }
+
+
 
 
 #endif
