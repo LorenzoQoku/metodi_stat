@@ -1,34 +1,30 @@
-#ifndef BETA_H  
-#define BETA_H
-
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <sstream>
-#include "TTree.h"
-#include <cmath>
+#include "histo.h"
+#include "mass.h"
+#include "TestbinnedChi2.h"
 #include "sum_no_doppieh.h"
 
-
 using namespace std;
+//Creo un file txt con tutte le masse
+void file_masse(){
 
-//La funzione prende in ingresso il nome del file dei dati e riempe un istogramma con i valori di beta calcolati
-
-void isto_beta_o(string a, TH1F *h) {
-
+    string a="/home/lorenzo/documenti/metodi_stat/Efficienze_e_particelle_totali/data_Lorenzo_Qoku.txt";
+    Double_t mass=0;
     Double_t beta[10]={0,0,0,0,0,0,0,0,0,0};
     Double_t x[10]={33,33,33,33,33,33,33,33,33,33};
     Double_t y[10]={33,33,33,33,33,33,33,33,33,33};
     Double_t k[10]={0,0,0,0,0,0,0,0,0,0};
 
     ifstream file(a);
+    ofstream file_m;
+    file_m.open("mass2.txt");
     double value=0;
     //variabile che tiene conto di quale tipo di dato stiamo leggendo
     int i=0;
     //variabile che tiene conto del evento che stiamo leggendo
     int c=0;
     int l=0;
-
 
     while(file >> value ) {
         Double_t v=value;
@@ -37,6 +33,9 @@ void isto_beta_o(string a, TH1F *h) {
         }
         if(c==10){
             c=0;
+            for(int r=0;r<10;r++){
+                k[r]=0;
+            }
         }
     
 
@@ -79,10 +78,16 @@ void isto_beta_o(string a, TH1F *h) {
                 }
                 else if(c==9){
                     x[9]=v;
+                    for(int r=0; r<10;r++){
+                        for(int j=0; j<10; j++){
+                            if( j!=r ){
+                                if(x[r]==x[j]) k[r]=1;
+                            }
+                        }
+                    }
                 }
             }
-
-        if(i==0){
+            if(i==1){
                 if(c==0){
                     y[0]=v;
                     
@@ -165,7 +170,17 @@ void isto_beta_o(string a, TH1F *h) {
                 beta[9]=v;
                 c++;
                 Double_t mean_beta=sum_noh(beta,k,x,y);
-                h->Fill(mean_beta);
+                mass = sqrt(1-mean_beta*mean_beta)*1500;
+                //Double_t mass_log=log(mass);
+                if(file_m.is_open()){
+                    if(mass!=0){
+                        file_m << mass;
+                        file_m << " ";
+                    }
+                }
+                else {
+                    cout << "Unable to open file!"<<endl;
+                }
             
             }
             
@@ -174,9 +189,7 @@ void isto_beta_o(string a, TH1F *h) {
 
     }
     file.close();
+    file_m.close();
 
     
 }
-
-
-#endif

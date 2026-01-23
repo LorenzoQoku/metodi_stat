@@ -16,7 +16,7 @@ using namespace std;
 
 //La funzione esegue il fit dell'istogramma dei valori di beta calcolati
 
-void histo(string a,TH1F *h, TF1 *ftot_p){
+void histo(string a0,TH1F *h){
 
     
 
@@ -30,20 +30,20 @@ void histo(string a,TH1F *h, TF1 *ftot_p){
     
 
 
-    isto_beta_o(a,h);
+    isto_beta_o(a0,h);
     int r= h->GetNbinsX() + 1;
 
     for(int i=1; i<r; i++){
         h->SetBinError(i, sqrt(h->GetBinContent(i)));
     }
 
-    ftot_p->SetParameters(63,0.998,0.0001,30,0.9986,0.00008,120,0.8317,0.12);
+    /*ftot_p->SetParameters(63,0.998,0.0001,30,0.9986,0.00008,120,0.8317,0.12);
 	h->Fit(ftot_p,"L","",0.99,1);
     cout<<"Fit parameters: "<<endl;
     for(int i=0;i<8;i++){
         cout<<"Parameter "<<i<<": "<<ftot_p->GetParameter(i)<<endl;
     }
-   cout<<"Chi2/NDF: "<<ftot_p->GetChisquare()/ftot_p->GetNDF()<<endl;
+   cout<<"Chi2/NDF: "<<ftot_p->GetChisquare()/ftot_p->GetNDF()<<endl;*/
 
 
 
