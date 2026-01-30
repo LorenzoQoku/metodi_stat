@@ -3,12 +3,16 @@
 
 #include <iostream>
 #include "TTree.h"
-#include "histo.h"
 #include <cmath>
+#include "TF1.h"
+#include "TH1.h"
+#include <fstream>
 
 using namespace std;
 
-void do_LDA(string a, TH1F *h_LDA){
+//Riempe un istogramma con le masse
+
+void make_histo_m(string a, TH1F *h_LDA){
 
 
 //La funzione prende in ingresso il nome del file dei dati e riempe un istogramma con i valori di beta calcolati
@@ -29,8 +33,7 @@ void do_LDA(string a, TH1F *h_LDA){
 
     while(file >> value ) {
         Double_t v=value;
-        mass=log(v);
-        h_LDA->Fill(mass);
+        h_LDA->Fill(v);
     }
     file.close();
 
